@@ -1,0 +1,49 @@
+.welcomemenu__container {
+    gap: 20px;
+    width: 400px;
+    padding: 40px;
+    border-radius: 20px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: rgb(220, 220, 220);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.welcomemenu__container > div {
+    border: 1px solid rgb(40, 61, 40);
+    border-radius: 10px;
+    padding: 14px;
+    gap: 10px;
+    width: 100%;
+
+    align-items: center;
+}
+
+.welcomemenu__container > div input {
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: 0;
+    border: 1px solid rgb(60, 60, 60);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 100%;
+}
+
+.welcomemenu__button {
+    width: 150px;
+    padding: 8px 16px;
+    background-color: rgb(9, 56, 3);
+    color: white;
+    border-radius: 10px;
+    border: 3px solid rgb(0, 43, 0);
+}
+
+.welcomemenu__button:hover {
+    background-color: rgb(12, 102, 0);
+    border: 3px solid rgb(0, 129, 0);
+    cursor: pointer;
+}

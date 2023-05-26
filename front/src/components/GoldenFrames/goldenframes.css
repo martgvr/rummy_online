@@ -1,0 +1,31 @@
+.goldenframes__container {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 20px;
+
+    z-index: -1;
+    opacity: 0.6;
+    filter: drop-shadow(15px 5px 5px #000000);
+}
+
+.goldenframes__container img {
+    position: absolute;
+    width: 250px;
+}
+
+.goldenframes__container img:nth-child(1) {
+    bottom: 20px;
+    transform: rotate(-90deg);
+}
+
+.goldenframes__container img:nth-child(2) {
+    right: 20px;
+    transform: rotate(90deg);
+}
+
+.goldenframes__container img:nth-child(3) {
+    bottom: 20px;
+    right: 20px;
+    transform: rotate(180deg);
+}
