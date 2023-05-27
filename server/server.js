@@ -24,22 +24,30 @@ socketServer.on('connection', (client) => {
         socketServer.to(client.id).emit("log", `Creando sala...`)
         await client.join(roomID)
 
-        activeRooms.push(roomID)
+        activeRooms.push({ id: roomID, users: [ client.id ] })
+
         socketServer.to(roomID).except(client.id).emit("log", `Nuevo cliente conectado ${client.id}`)
         socketServer.to(client.id).emit("roomCreated", roomID)
     });
 
     client.on("joinRoom", async (roomID) => {
-        const checkExistance = activeRooms.find(room => room == roomID)
-        
-        if (checkExistance === undefined) {
+        const checkRoomExistence = activeRooms.find(room => room.id == roomID)
+
+        if (checkRoomExistence === undefined) {
             socketServer.to(client.id).emit("log", `La sala ${roomID} no existe`)
         } else {
-            socketServer.to(client.id).emit("log", `Entrando en la sala: ${roomID}`)
-            await client.join(roomID)
+            const checkUserExistence = activeRooms.find(room => room.users.includes(client.id))
+            
+            if (checkUserExistence == undefined) {
+                socketServer.to(client.id).emit("log", `Entrando en la sala: ${roomID}`)
+                await client.join(roomID)
+                
+                socketServer.to(roomID).except(client.id).emit("clientConnected", client.id)
+                checkRoomExistence.users.push(client.id)
+            } else {
+                socketServer.to(client.id).emit("log", `Ya te encuentras en la sala: ${roomID}`)
+            }
         }
-
-        socketServer.to(roomID).emit("log", `Nuevo cliente conectado ${client.id}`)
     });
 
     client.on("sendMessage", async (message) => {
@@ -53,7 +61,7 @@ socketServer.on('connection', (client) => {
 
 socketServer.of("/").adapter.on("join-room", (room, id) => {
     if (room != id) {
-        console.log(`socket ${id} has joined room ${room}`);
+        console.log(`El cliente ${id} entro a la sala: ${room}`);
     }
 });
 

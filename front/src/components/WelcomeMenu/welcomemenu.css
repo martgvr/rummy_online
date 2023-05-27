@@ -47,3 +47,13 @@
     border: 3px solid rgb(0, 129, 0);
     cursor: pointer;
 }
+
+.welcomemenu__button.redcolor {
+    background-color: rgb(56, 3, 3);
+    border: 3px solid rgb(43, 0, 0);
+}
+
+.welcomemenu__button.redcolor:hover {
+    background-color: rgb(102, 0, 0);
+    border: 3px solid rgb(129, 0, 0);
+}
