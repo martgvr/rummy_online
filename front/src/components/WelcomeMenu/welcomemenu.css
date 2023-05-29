@@ -33,7 +33,23 @@
     width: 100%;
 }
 
+.welcomenewlobby__id {
+    align-items: center;
+    gap: 10px;
+}
+
+.welcomenewlobby__id img {
+    width: 13px;
+    height: 13px;
+    filter: invert(1);
+}
+
+.welcomenewlobby__id img:hover {
+    cursor: pointer;
+}
+
 .welcomemenu__button {
+    /* width: 150px; */
     width: 150px;
     padding: 8px 16px;
     background-color: rgb(9, 56, 3);

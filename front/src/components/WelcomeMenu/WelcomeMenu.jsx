@@ -23,12 +23,12 @@ function WelcomeMenu({ setActiveMenu, setRoomID }) {
             <h1>Bienvenido!</h1>
     
             <div className="flex-column">
-                <button className="welcomemenu__button" onClick={createRoom}>Crear sala aleatoria</button>
-            </div>
-
-            <div className="flex-column">
                 <input type="text" name="roomID" id="roomID" placeholder="ID de sala" />
                 <button className="welcomemenu__button" onClick={joinRoom}>Entrar a sala</button>
+            </div>
+            
+            <div className="flex-column">
+                <button className="welcomemenu__button" onClick={createRoom}>Crear sala aleatoria</button>
             </div>
         </div>
     )

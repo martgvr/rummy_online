@@ -7,9 +7,7 @@ function WelcomeNewLobby({ roomID }) {
 
     useEffect(() => {
 		socket.on("clientConnected", (value) => {
-            setClients(oldClients => [...oldClients, value])
-
-            console.log(clients.find(client => client == value))
+            setClients(value)
         })
 	}, [])
 
@@ -17,10 +15,19 @@ function WelcomeNewLobby({ roomID }) {
         console.log(clients)
 	}, [clients])
 
+    const copyHandler = () => {
+        navigator.clipboard.writeText(roomID)
+    }
+
 	return(
         <div className="welcomenewlobby__container flex-column">
             <h2>Nueva sala creada</h2>
-            <h4>ID: {roomID}</h4>
+
+            <div className='welcomenewlobby__id flex-row'>
+                <h4>ID: {roomID}</h4>
+                <img src="https://img.uxwing.com/wp-content/themes/uxwing/download/file-folder-type/copy-icon.png" alt="" onClick={copyHandler} />
+            </div>
+
             <p>Esperando oponentes...</p>
 
             <ul id='clients-list'>
