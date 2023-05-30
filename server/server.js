@@ -32,6 +32,7 @@ socketServer.on('connection', (client) => {
             
             if (checkUserExistence == undefined) {
                 socketServer.to(client.id).emit("log", `Entrando en la sala: ${roomID}`)
+                socketServer.to(client.id).emit("joinSuccess", roomID)
                 await client.join(roomID)
             } else {
                 socketServer.to(client.id).emit("log", `Ya te encuentras en la sala: ${roomID}`)
@@ -42,7 +43,7 @@ socketServer.on('connection', (client) => {
     client.on("sendMessage", async (message) => {
         client.rooms.forEach(room => {
             if (room != client.id) {
-                socketServer.to(room).emit("log", `[${room}] ${client.id}: ${message}`)
+                socketServer.to(room).emit("newMessage", client.id, message)
             }
         })
     });
@@ -56,12 +57,11 @@ socketServer.of("/").adapter.on("join-room", (roomID, clientID) => {
             console.log(`El cliente ${clientID} entró a la sala: ${roomID}`);
 
             checkRoomExistence.users.push(clientID)
-            socketServer.to(roomID).except(clientID).emit("clientConnected", checkRoomExistence.users)
             socketServer.to(roomID).except(clientID).emit("log", `Nuevo cliente conectado ${clientID}`)
+            setTimeout(() => socketServer.to(roomID).emit("clientConnected", checkRoomExistence.users), 100)
         } else {
             console.log(`El cliente ${clientID} creó la sala: ${roomID}`)
-            activeRooms.push({ id: roomID, users: [ clientID ] })
-
+            activeRooms.push({ id: roomID, users: [ clientID ], messages: [] })
             setTimeout(() => socketServer.to(roomID).emit("clientConnected", [ clientID ]), 100)
         }
     }

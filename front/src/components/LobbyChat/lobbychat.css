@@ -1,0 +1,54 @@
+.lobbychat__container {
+    gap: 20px;
+    width: 500px;
+    padding: 20px;
+    border-radius: 20px;
+    
+    justify-content: space-between;
+
+    color: rgb(220, 220, 220);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+
+    height: 220px;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+}
+
+.lobbychat__container ul {
+    width: 100%;
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.lobbychat__input {
+    padding: 8px 10px;
+    border-radius: 4px;
+    outline: 0;
+    border: 1px solid rgb(60, 60, 60);
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+    width: 100%;
+}
+
+.lobbychat__input:focus::placeholder {
+    opacity: 0;
+}
+
+.lobbychat__inputcontainer {
+    gap: 10px;
+    align-items: center;
+}
+
+.lobbychat__inputcontainer img {
+    width: 20px;
+    height: 20px;
+    filter: invert(1);
+    opacity: 0.6;
+}
+
+.lobbychat__inputcontainer img:hover {
+    cursor: pointer;
+}

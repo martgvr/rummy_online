@@ -1,5 +1,9 @@
 .welcomenewlobby__container {
     gap: 20px;
+}
+
+.welcomenewlobby__data {
+    gap: 20px;
     width: 400px;
     padding: 40px;
     border-radius: 20px;
@@ -14,12 +18,29 @@
 }
 
 .welcomenewlobby__container p {
+    margin-top: 20px;
     margin-bottom: 20px;
     text-transform: uppercase;
     font-size: 0.8em;
+    color: rgb(140, 140, 140);
 }
 
 .welcomenewlobby__buttons {
     margin-top: 20px;
     gap: 20px;
+}
+
+.welcomenewlobby__clients {
+    gap: 15px;
+}
+
+.welcomenewlobby__clients img {
+    width: 30px;
+    height: 30px;
+    border-radius: 100%;
+}
+
+.welcomenewlobby__clients li {
+    gap: 10px;
+    align-items: center;
 }

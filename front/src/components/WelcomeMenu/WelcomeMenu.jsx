@@ -9,6 +9,11 @@ function WelcomeMenu({ setActiveMenu, setRoomID }) {
             setActiveMenu('new-lobby')
             setRoomID(roomID)
         })
+
+        socket.on("joinSuccess", (roomID) => {
+            setActiveMenu('lobby')
+            setRoomID(roomID)
+        })
 	}, [])
 
     const createRoom = () => socket.emit('createRoom')
