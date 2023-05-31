@@ -33,6 +33,14 @@
     width: 100%;
 }
 
+.welcomemenu__container > div input:focus {
+    border: 1px solid rgb(130, 130, 130);
+}
+
+.welcomemenu__container > div input:focus::placeholder {
+    color: transparent;
+}
+
 .welcomenewlobby__id {
     align-items: center;
     gap: 10px;
@@ -50,7 +58,7 @@
 
 .welcomemenu__button {
     /* width: 150px; */
-    width: 150px;
+    width: 100%;
     padding: 8px 16px;
     background-color: rgb(9, 56, 3);
     color: white;
@@ -72,4 +80,15 @@
 .welcomemenu__button.redcolor:hover {
     background-color: rgb(102, 0, 0);
     border: 3px solid rgb(129, 0, 0);
+}
+
+.welcomemenu__button.disable {
+    background-color: rgb(39, 41, 39);
+    border: 3px solid rgb(34, 37, 34);
+}
+
+.welcomemenu__button.disable:hover {
+    background-color: rgb(39, 41, 39);
+    border: 3px solid rgb(34, 37, 34);
+    cursor: auto;
 }

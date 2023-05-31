@@ -14,8 +14,8 @@ function Welcome() {
         <div className="welcome__container flex-row">
             <GoldenFrames />
             
-            { activeMenu == 'lobby' && <WelcomeLobby roomID={roomID} /> }
-            { activeMenu == 'new-lobby' && <WelcomeNewLobby roomID={roomID} /> }
+            { activeMenu == 'lobby' && <WelcomeLobby roomID={roomID} setActiveMenu={setActiveMenu} /> }
+            { activeMenu == 'new-lobby' && <WelcomeNewLobby roomID={roomID} setActiveMenu={setActiveMenu} /> }
             { activeMenu == 'initial' && <WelcomeMenu setActiveMenu={setActiveMenu} setRoomID={setRoomID} /> }
         </div>
     )

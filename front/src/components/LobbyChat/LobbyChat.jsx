@@ -6,8 +6,8 @@ function LobbyChat() {
 	const [messages, setMessages] = useState([])
 
 	useEffect(() => {
-		const handleNewMessage = (clientID, message) => {
-			setMessages((existingMessages) => [...existingMessages, { clientID: clientID, message: message }])
+		const handleNewMessage = (clientID, nickname, message) => {
+			setMessages((existingMessages) => [...existingMessages, { clientID: clientID, nickname: nickname, message: message }])
 		}
 
 		socket.on("newMessage", handleNewMessage)
@@ -29,9 +29,19 @@ function LobbyChat() {
 		<div className="lobbychat__container flex-column">
 			<ul>
 				{messages.map((item, index) => (
-					<li key={index}>
-						[{item.clientID}]: {item.message}
-					</li>
+					<>
+						{
+							item.clientID == '' ?
+							<li key={index} className="lobbychat__container--system">
+								{item.message}
+							</li>
+							:
+							<li key={index} className="lobbychat__container--message flex-row">
+								<p>[{item.nickname}]:</p>
+								<p>{item.message}</p>
+							</li>
+						}
+					</>
 				))}
 			</ul>
 

@@ -1,39 +1,41 @@
 import './welcomemenu.css'
-import React, { useEffect } from "react"
 import { socket } from "../../services/socket"
+import React, { useEffect, useState } from "react"
 
 function WelcomeMenu({ setActiveMenu, setRoomID }) {
+    const [nickname, setNickname] = useState('')
+    const [room, setRoom] = useState('')
+
     useEffect(() => {
 		socket.on("roomCreated", (roomID) => {
-            console.log(`Sala creada con ID: ${roomID}`)
-            setActiveMenu('new-lobby')
             setRoomID(roomID)
+            setActiveMenu('new-lobby')
         })
 
         socket.on("joinSuccess", (roomID) => {
-            setActiveMenu('lobby')
             setRoomID(roomID)
+            setActiveMenu('lobby')
         })
 	}, [])
 
-    const createRoom = () => socket.emit('createRoom')
+    const createRoom = () => (nickname.length > 2) && socket.emit('createRoom', nickname)
+    const joinRoom = () => ((room.length > 0) && (nickname.length > 0)) && socket.emit('joinRoom', room, nickname)
     
-    const joinRoom = () => {
-        const roomID = document.getElementById('roomID').value
-        socket.emit('joinRoom', roomID)
-    }
+    const handleNickname = (e) => setNickname(e.target.value)
+    const handleRoom = (e) => setRoom(e.target.value)
 
 	return(
         <div className="welcomemenu__container flex-column">
             <h1>Bienvenido!</h1>
+
+            <div className="flex-column">
+                <input type="text" name="nickname" id="nickname" placeholder="Ingrese un nick (mínimo 3 caracteres)" onChange={handleNickname} />
+            </div>
     
             <div className="flex-column">
-                <input type="text" name="roomID" id="roomID" placeholder="ID de sala" />
-                <button className="welcomemenu__button" onClick={joinRoom}>Entrar a sala</button>
-            </div>
-            
-            <div className="flex-column">
-                <button className="welcomemenu__button" onClick={createRoom}>Crear sala aleatoria</button>
+                <button className={`welcomemenu__button ${nickname.length > 2 ? '' : 'disable'}`} onClick={createRoom} >Crear sala aleatoria</button>
+                <button className={`welcomemenu__button ${nickname.length > 2 ? '' : 'disable'}`} onClick={joinRoom}>Entrar a sala</button>
+                <input type="text" name="roomID" id="roomID" placeholder="ID de sala" onChange={handleRoom} />
             </div>
         </div>
     )

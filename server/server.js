@@ -10,66 +10,69 @@ const socketServer = new Server(httpServer, { cors: { origin: "*" } })
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+app.get('/', (req, res) => res.send(activeRooms))
+
 let activeRooms = []
 
 socketServer.on('connection', (client) => {
     console.log('Nuevo cliente conectado', client.id);
 
-    client.on("createRoom", async () => {
+    client.on("createRoom", async (nickname) => {
         const roomID = 'room' + Math.floor(Math.random() * 1000)
-        socketServer.to(client.id).emit("log", `Creando sala...`)
         await client.join(roomID)
+        
         socketServer.to(client.id).emit("roomCreated", roomID)
+        activeRooms.push({ id: roomID, users: [{ clientID: client.id, nickname: nickname }], messages: [], state: 'waiting' })
+
+        setTimeout(() => socketServer.to(roomID).emit("clientConnected", [{ clientID: client.id, nickname: nickname }]), 100)
     });
 
-    client.on("joinRoom", async (roomID) => {
+    client.on("joinRoom", async (roomID, nickname) => {
         const checkRoomExistence = activeRooms.find(room => room.id == roomID)
 
         if (checkRoomExistence === undefined) {
             socketServer.to(client.id).emit("log", `La sala ${roomID} no existe`)
         } else {
-            const checkUserExistence = activeRooms.find(room => room.users.includes(client.id))
-            
-            if (checkUserExistence == undefined) {
-                socketServer.to(client.id).emit("log", `Entrando en la sala: ${roomID}`)
-                socketServer.to(client.id).emit("joinSuccess", roomID)
-                await client.join(roomID)
-            } else {
-                socketServer.to(client.id).emit("log", `Ya te encuentras en la sala: ${roomID}`)
-            }
+            await client.join(roomID)
+
+            socketServer.to(client.id).emit("joinSuccess", roomID)
+            socketServer.to(roomID).emit("newMessage", '', `${nickname} entró a la sala`)
+
+            checkRoomExistence.users.push({ clientID: client.id, nickname: nickname })
+            setTimeout(() => socketServer.to(roomID).emit("clientConnected", checkRoomExistence.users), 100)
         }
     });
 
+    client.on("leaveRoom", () => {
+        client.rooms.forEach(clientRoom => {
+            if (clientRoom != client.id) {
+                client.leave(clientRoom)
+                socketServer.to(client.id).emit("leaveSuccess")
+            }
+        })
+    });
+
     client.on("sendMessage", async (message) => {
-        client.rooms.forEach(room => {
-            if (room != client.id) {
-                socketServer.to(room).emit("newMessage", client.id, message)
+        client.rooms.forEach(clientRoom => {
+
+            if (clientRoom != client.id) {
+                const getRoom = activeRooms.find(room => room.id == clientRoom)
+                const userData = getRoom.users.find(user => user.clientID == client.id)
+
+                socketServer.to(clientRoom).emit("newMessage", client.id, userData.nickname, message)
+
+                if (getRoom !== undefined) {
+                    getRoom.messages.push({ clientID: client.id, nickname: userData.nickname, message: message })
+                }
             }
         })
     });
 })
 
-socketServer.of("/").adapter.on("join-room", (roomID, clientID) => {
-    if (roomID != clientID) {
-        const checkRoomExistence = activeRooms.find(room => room.id == roomID)
-        
-        if (checkRoomExistence !== undefined) {
-            console.log(`El cliente ${clientID} entró a la sala: ${roomID}`);
-
-            checkRoomExistence.users.push(clientID)
-            socketServer.to(roomID).except(clientID).emit("log", `Nuevo cliente conectado ${clientID}`)
-            setTimeout(() => socketServer.to(roomID).emit("clientConnected", checkRoomExistence.users), 100)
-        } else {
-            console.log(`El cliente ${clientID} creó la sala: ${roomID}`)
-            activeRooms.push({ id: roomID, users: [ clientID ], messages: [] })
-            setTimeout(() => socketServer.to(roomID).emit("clientConnected", [ clientID ]), 100)
-        }
-    }
-});
-
 socketServer.of("/").adapter.on("leave-room", (roomID, clientID) => {
     if (roomID != clientID) {
         console.log(`El cliente ${clientID} dejó la sala: ${roomID}`)
+        socketServer.to(roomID).emit("newMessage", '', `${clientID} salió de la sala`)
 
         const getRoom = activeRooms.find(room => room.id == roomID)
         const clientIndex = getRoom.users.indexOf(clientID)

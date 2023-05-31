@@ -11,10 +11,10 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 
+    right: 20px;
+    bottom: 20px;
     height: 220px;
     position: absolute;
-    bottom: 20px;
-    right: 20px;
 }
 
 .lobbychat__container ul {
@@ -51,4 +51,29 @@
 
 .lobbychat__inputcontainer img:hover {
     cursor: pointer;
+}
+
+.lobbychat__container--system {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    color: rgb(65, 154, 228);
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
+
+.lobbychat__container--system:first-of-type {
+    margin-top: 0px;
+    margin-bottom: 10px;
+}
+
+.lobbychat__container--message {
+    gap: 10px;
+}
+
+.lobbychat__container--message > p:first-of-type {
+    color: rgb(248, 155, 68);
+}
+
+.lobbychat__container--message > p:last-of-type {
+    gap: 10px;
 }

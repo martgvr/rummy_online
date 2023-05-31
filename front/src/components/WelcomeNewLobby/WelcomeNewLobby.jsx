@@ -3,14 +3,20 @@ import React, { useEffect, useState } from "react"
 import { socket } from "../../services/socket"
 import LobbyChat from '../LobbyChat/LobbyChat'
 
-function WelcomeNewLobby({ roomID }) {
+function WelcomeNewLobby({ roomID, setActiveMenu }) {
     const [clients, setClients] = useState([])
 
     useEffect(() => {
-		socket.on("clientConnected", (value) => setClients(value))
+		socket.on("clientConnected", (value) => {
+            console.log(value);
+            setClients(value)
+        })
+        socket.on("leaveSuccess", () => setActiveMenu('initial'))
 	}, [])
 
     const copyHandler = () => navigator.clipboard.writeText(roomID)
+
+    const leaveRoomHandler = () => socket.emit('leaveRoom')
 
 	return(
         <div className="welcomenewlobby__container flex-row">
@@ -27,13 +33,13 @@ function WelcomeNewLobby({ roomID }) {
                 <ul className='welcomenewlobby__clients flex-column' id='clients-list'>
                     {
                         clients.map(client => 
-                            <li key={client} className='flex-row'><img src="https://i.pinimg.com/originals/82/68/c7/8268c7aadf0a9077396836037307adeb.jpg" alt="" /> {client}</li>
+                            <li key={client.nickname} className='flex-row'><img src="https://i.pinimg.com/originals/82/68/c7/8268c7aadf0a9077396836037307adeb.jpg" alt="" /> {client.nickname}</li>
                         )
                     }
                 </ul>
 
                 <div className="welcomenewlobby__buttons flex-row">
-                    <button className="welcomemenu__button redcolor">Salir del lobby</button>
+                    <button className="welcomemenu__button redcolor" onClick={leaveRoomHandler}>Salir de la sala</button>
                     <button className="welcomemenu__button">Iniciar partida</button>
                 </div>
             </div>
