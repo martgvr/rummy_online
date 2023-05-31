@@ -1,22 +1,19 @@
 import './welcomenewlobby.css'
-import React, { useEffect, useState } from "react"
 import { socket } from "../../services/socket"
+import React, { useEffect, useState } from "react"
+
 import LobbyChat from '../LobbyChat/LobbyChat'
 
-function WelcomeNewLobby({ roomID, setActiveMenu }) {
+function WelcomeNewLobby({ roomID }) {
     const [clients, setClients] = useState([])
 
     useEffect(() => {
-		socket.on("clientConnected", (value) => {
-            console.log(value);
-            setClients(value)
-        })
-        socket.on("leaveSuccess", () => setActiveMenu('initial'))
+		socket.on("clientConnected", (value) => setClients(value))
 	}, [])
 
     const copyHandler = () => navigator.clipboard.writeText(roomID)
-
     const leaveRoomHandler = () => socket.emit('leaveRoom')
+    const startGameHandler = () => socket.emit('startGame')
 
 	return(
         <div className="welcomenewlobby__container flex-row">
@@ -40,7 +37,7 @@ function WelcomeNewLobby({ roomID, setActiveMenu }) {
 
                 <div className="welcomenewlobby__buttons flex-row">
                     <button className="welcomemenu__button redcolor" onClick={leaveRoomHandler}>Salir de la sala</button>
-                    <button className="welcomemenu__button">Iniciar partida</button>
+                    <button className="welcomemenu__button" onClick={startGameHandler}>Iniciar partida</button>
                 </div>
             </div>
 

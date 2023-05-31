@@ -1,22 +1,10 @@
 import './welcomemenu.css'
 import { socket } from "../../services/socket"
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 
-function WelcomeMenu({ setActiveMenu, setRoomID }) {
+function WelcomeMenu() {
     const [nickname, setNickname] = useState('')
     const [room, setRoom] = useState('')
-
-    useEffect(() => {
-		socket.on("roomCreated", (roomID) => {
-            setRoomID(roomID)
-            setActiveMenu('new-lobby')
-        })
-
-        socket.on("joinSuccess", (roomID) => {
-            setRoomID(roomID)
-            setActiveMenu('lobby')
-        })
-	}, [])
 
     const createRoom = () => (nickname.length > 2) && socket.emit('createRoom', nickname)
     const joinRoom = () => ((room.length > 0) && (nickname.length > 0)) && socket.emit('joinRoom', room, nickname)

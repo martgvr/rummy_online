@@ -3,15 +3,11 @@ import React, { useEffect, useState } from "react"
 
 import LobbyChat from "../LobbyChat/LobbyChat"
 
-function WelcomeLobby({ roomID, setActiveMenu }) {
+function WelcomeLobby({ roomID }) {
 	const [clients, setClients] = useState([])
 
 	useEffect(() => {
-		socket.on("clientConnected", (value) => {
-			console.log(value)
-			setClients(value)
-		})
-		socket.on("leaveSuccess", () => setActiveMenu("initial"))
+		socket.on("clientConnected", (value) => setClients(value))
 	}, [])
 
 	const leaveRoomHandler = () => socket.emit("leaveRoom")

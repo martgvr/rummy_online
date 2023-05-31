@@ -15,8 +15,6 @@ app.get('/', (req, res) => res.send(activeRooms))
 let activeRooms = []
 
 socketServer.on('connection', (client) => {
-    console.log('Nuevo cliente conectado', client.id);
-
     client.on("createRoom", async (nickname) => {
         const roomID = 'room' + Math.floor(Math.random() * 1000)
         await client.join(roomID)
@@ -67,11 +65,29 @@ socketServer.on('connection', (client) => {
             }
         })
     });
+
+    client.on("startGame", () => {
+        client.rooms.forEach(clientRoom => {
+            if (clientRoom != client.id) {
+
+                let timeLeft = 11;
+
+                function countdown() {
+                    timeLeft--;
+                    socketServer.to(clientRoom).emit("startGameCountdown", timeLeft)
+                    if (timeLeft > 0) {
+                        setTimeout(countdown, 1000);
+                    }
+                };
+                
+                setTimeout(countdown, 1000);
+            }
+        })
+    });
 })
 
 socketServer.of("/").adapter.on("leave-room", (roomID, clientID) => {
     if (roomID != clientID) {
-        console.log(`El cliente ${clientID} dejó la sala: ${roomID}`)
         socketServer.to(roomID).emit("newMessage", '', `${clientID} salió de la sala`)
 
         const getRoom = activeRooms.find(room => room.id == roomID)

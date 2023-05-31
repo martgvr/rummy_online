@@ -1,0 +1,18 @@
+.lobbycountdown__container {
+    gap: 20px;
+    width: 400px;
+    padding: 40px;
+    border-radius: 20px;
+
+    align-items: center;
+    justify-content: center;
+
+    color: rgb(220, 220, 220);
+    background-color: rgba(0, 0, 0, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+}
+
+.lobbycountdown__container p {
+    font-size: 3em;
+}
