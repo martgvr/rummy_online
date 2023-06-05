@@ -18,9 +18,18 @@ socketServer.on('connection', (client) => {
     client.on("createRoom", async (nickname) => {
         const roomID = 'room' + Math.floor(Math.random() * 1000)
         await client.join(roomID)
-        
+
         socketServer.to(client.id).emit("roomCreated", roomID)
-        activeRooms.push({ id: roomID, users: [{ clientID: client.id, nickname: nickname }], messages: [], state: 'waiting' })
+
+        activeRooms.push({
+            id: roomID,
+            users: [{
+                clientID: client.id,
+                nickname: nickname,
+            }],
+            messages: [],
+            state: 'waiting'
+        })
 
         setTimeout(() => socketServer.to(roomID).emit("clientConnected", [{ clientID: client.id, nickname: nickname }]), 100)
     });
@@ -52,7 +61,6 @@ socketServer.on('connection', (client) => {
 
     client.on("sendMessage", async (message) => {
         client.rooms.forEach(clientRoom => {
-
             if (clientRoom != client.id) {
                 const getRoom = activeRooms.find(room => room.id == clientRoom)
                 const userData = getRoom.users.find(user => user.clientID == client.id)
@@ -69,18 +77,42 @@ socketServer.on('connection', (client) => {
     client.on("startGame", () => {
         client.rooms.forEach(clientRoom => {
             if (clientRoom != client.id) {
+                const getRoom = activeRooms.find(room => room.id == clientRoom)
 
-                let timeLeft = 11;
+                if ((getRoom.users.length > 0) && (getRoom.state === 'waiting')) {
+                    const tokensTaken = []
 
-                function countdown() {
-                    timeLeft--;
-                    socketServer.to(clientRoom).emit("startGameCountdown", timeLeft)
-                    if (timeLeft > 0) {
-                        setTimeout(countdown, 1000);
-                    }
-                };
-                
-                setTimeout(countdown, 1000);
+                    getRoom.users.forEach(user => {
+                        user.cards = []
+
+                        let pushedCounter = 0
+
+                        do {
+                            const number = Math.floor(Math.random() * 106) + 1
+                            const checkExistence = tokensTaken.some(token => token == number)
+
+                            if (!checkExistence) { 
+                                tokensTaken.push(number)
+                                user.cards.push(number)
+                                pushedCounter++
+                            }
+                        } while (pushedCounter != 14)
+
+                        console.log(user.cards);
+                    })
+                }
+
+                // let timeLeft = 11;
+
+                // function countdown() {
+                //     timeLeft--;
+                //     socketServer.to(clientRoom).emit("startGameCountdown", timeLeft)
+                //     if (timeLeft > 0) {
+                //         setTimeout(countdown, 1000);
+                //     }
+                // };
+
+                // setTimeout(countdown, 1000);
             }
         })
     });
@@ -104,9 +136,5 @@ socketServer.of("/").adapter.on("leave-room", (roomID, clientID) => {
 });
 
 const PORT = process.env.PORT || 8080
-
-const server = httpServer.listen(PORT, (req, res) => {
-    console.log(`[ Listening port: ${PORT} ]`)
-})
-
+const server = httpServer.listen(PORT, (req, res) => console.log(`[ Listening port: ${PORT} ]`))
 server.on('error', error => console.log(`Error: ${error}`))
