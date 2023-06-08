@@ -85,22 +85,25 @@ socketServer.on('connection', (client) => {
                         }
                     } while (pushedCounter != 14)
 
-                    console.log(user);
-                    console.log(user.cards);
+                    socketServer.to(user.clientID).emit("yourCards", user.cards)
                 })
+
+                let timeLeft = 11;
+
+                function countdown() {
+                    timeLeft--;
+                    socketServer.to(clientRoom.id).emit("startGameCountdown", timeLeft)
+                    if (timeLeft > 0) {
+                        setTimeout(countdown, 1000);
+                    }
+                };
+    
+                setTimeout(countdown, 1000);
+
+                setTimeout(() => {
+                    socketServer.to(clientRoom.id).emit("startGame")
+                }, (timeLeft + 1) * 1000);
             }
-
-            // let timeLeft = 11;
-
-            // function countdown() {
-            //     timeLeft--;
-            //     socketServer.to(clientRoom).emit("startGameCountdown", timeLeft)
-            //     if (timeLeft > 0) {
-            //         setTimeout(countdown, 1000);
-            //     }
-            // };
-
-            // setTimeout(countdown, 1000);
         })
 })
 

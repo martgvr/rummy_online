@@ -1,0 +1,15 @@
+.gametable__tile {
+    width: 70px;
+    height: 90px;
+    border-radius: 6px;
+    background-image: url('tile.png');
+
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 30px;
+    color: black;
+}
+
+.gametable__tile:hover {
+    cursor: pointer;
+}
