@@ -11,6 +11,8 @@ import GametableContainer from '../GametableContainer/GametableContainer'
 
 function Welcome() {
     const [cards, setCards] = useState([])
+    const [opponents, setOpponents] = useState([])
+
     const [roomID, setRoomID] = useState('')
     const [countdown, setCountdown] = useState(10)
     const [activeMenu, setActiveMenu] = useState('initial')
@@ -32,9 +34,13 @@ function Welcome() {
                 setCountdown(time)
             })
             
-            .on("yourCards", (cards) => setCards(cards))
             .on("startGame", () => setActiveMenu("gametable"))
             .on("leaveSuccess", () => setActiveMenu("initial"))
+
+            .on("gameData", (cards, opponents) => {
+                setCards(cards)
+                setOpponents(opponents)
+            })
 	}, [])
 
 	return(
@@ -43,8 +49,8 @@ function Welcome() {
             { activeMenu == 'lobby' && <WelcomeLobby roomID={roomID} /> }
             { activeMenu == 'initial' && <WelcomeMenu setRoomID={setRoomID} /> }
             { activeMenu == 'new-lobby' && <WelcomeNewLobby roomID={roomID} /> }
-            { activeMenu == 'gametable' && <GametableContainer cards={cards} /> }
             { activeMenu == 'lobby-countdown' && <LobbyCountdown time={countdown} /> }
+            { activeMenu == 'gametable' && <GametableContainer cards={cards} opponents={opponents} /> }
         </div>
     )
 }

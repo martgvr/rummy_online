@@ -71,7 +71,6 @@ socketServer.on('connection', (client) => {
 
                 clientRoom.users.forEach(user => {
                     user.cards = []
-
                     let pushedCounter = 0
 
                     do {
@@ -85,24 +84,24 @@ socketServer.on('connection', (client) => {
                         }
                     } while (pushedCounter != 14)
 
-                    socketServer.to(user.clientID).emit("yourCards", user.cards)
+                    socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users)
                 })
 
-                let timeLeft = 11;
+                let timeLeft = 11
 
                 function countdown() {
                     timeLeft--;
                     socketServer.to(clientRoom.id).emit("startGameCountdown", timeLeft)
                     if (timeLeft > 0) {
-                        setTimeout(countdown, 1000);
+                        setTimeout(countdown, 1000)
                     }
                 };
     
-                setTimeout(countdown, 1000);
+                setTimeout(countdown, 1000)
 
                 setTimeout(() => {
                     socketServer.to(clientRoom.id).emit("startGame")
-                }, (timeLeft + 1) * 1000);
+                }, (timeLeft + 1) * 1000)
             }
         })
 })
@@ -122,7 +121,7 @@ socketServer.of("/").adapter.on("leave-room", (roomID, clientID) => {
             activeRooms.splice(emptyRoomIndex, 1)
         }
     }
-});
+})
 
 const PORT = process.env.PORT || 8080
 const server = httpServer.listen(PORT, () => console.log(`[ Listening port: ${PORT} ]`))

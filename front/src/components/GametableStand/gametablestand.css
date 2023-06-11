@@ -10,4 +10,6 @@
     flex-wrap: wrap;
     background-image: url('stand.png');
     gap: 5px;
+
+    box-shadow: rgba(0, 0, 0, 0.7) 0px 22px 90px 24px;
 }

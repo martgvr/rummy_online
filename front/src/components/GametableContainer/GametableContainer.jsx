@@ -1,18 +1,18 @@
 import "./gametablecontainer.css"
-import { socket } from "../../services/socket"
-import React, { useEffect, useState } from "react"
-import GametableStand from "../GametableStand/GametableStand";
+import React, { useEffect } from "react"
 
-function GametableContainer({ cards }) {
-  useEffect(() => {
-    console.log('Cartas:', cards);
-  }, [])
+import GametableStand from "../GametableStand/GametableStand"
 
-	return(
-    <div className="gametablecontainer">
-      <GametableStand cards={cards} />
-    </div>
-  )
+function GametableContainer({ cards, opponents }) {
+	useEffect(() => {
+		console.log("Oponentes:", opponents)
+	}, [])
+
+	return (
+		<div className="gametablecontainer">
+			<GametableStand cards={cards} />
+		</div>
+	)
 }
 
 export default GametableContainer
