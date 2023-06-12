@@ -1,13 +1,14 @@
 .gametable__tile {
-    width: 70px;
-    height: 90px;
+    width: 60px;
+    height: 80px;
     border-radius: 6px;
     background-image: url('tile.png');
 
+    color: black;
+    font-size: 0.8em;
     align-items: center;
     justify-content: center;
     padding-bottom: 30px;
-    color: black;
 }
 
 .gametable__tile:hover {

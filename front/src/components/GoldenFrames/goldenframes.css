@@ -11,7 +11,7 @@
 
 .goldenframes__container img {
     position: absolute;
-    width: 250px;
+    width: 200px;
 }
 
 .goldenframes__container img:nth-child(1) {

@@ -14,8 +14,8 @@ function GametableTile({ number }) {
         if ((number >= 66) && (number <= 78)) { setVisualizedNumber(number - 65) }
         if ((number >= 79) && (number <= 91)) { setVisualizedNumber(number - 78) }
         if ((number >= 92) && (number <= 104)) { setVisualizedNumber(number - 91) }
-        if (number == 105) { setVisualizedNumber(X) }
-        if (number == 106) { setVisualizedNumber(X) }
+        if (number == 105) { setVisualizedNumber('X') }
+        if (number == 106) { setVisualizedNumber('X') }
 
         if ((number >= 1) && (number <= 26)) { setColor('#c7141a') }
         if ((number >= 27) && (number <= 52)) { setColor('#0068a8') }
