@@ -1,4 +1,6 @@
 .gametable__stand {
+    grid-area: stand;
+
     gap: 5px;
     width: 100%;
     padding: 10px;

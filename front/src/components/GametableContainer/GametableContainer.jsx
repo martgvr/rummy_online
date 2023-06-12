@@ -3,6 +3,7 @@ import React, { useEffect } from "react"
 
 import GametableStand from "../GametableStand/GametableStand"
 import LobbyChat from "../LobbyChat/LobbyChat"
+import GametableButtons from "../GametableButtons/GametableButtons"
 
 function GametableContainer({ cards, opponents }) {
 	useEffect(() => {
@@ -10,7 +11,7 @@ function GametableContainer({ cards, opponents }) {
 	}, [])
 
 	return (
-		<div className="gametablecontainer flex-column">
+		<div className="gametablecontainer">
 
 			<div className="gametable__opponents flex-column">
 				{
@@ -25,6 +26,11 @@ function GametableContainer({ cards, opponents }) {
 
 			<LobbyChat />
 			<GametableStand cards={cards} />
+			<GametableButtons />
+
+			<div className="gametable__board">
+				<p>gametable</p>
+			</div>
 		</div>
 	)
 }

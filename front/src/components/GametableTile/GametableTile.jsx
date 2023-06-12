@@ -26,7 +26,7 @@ function GametableTile({ number }) {
     }, [])
 
 	return(
-        <div className="gametable__tile flex-row">
+        <div className="gametable__tile flex-row" draggable>
             <h1 style={{color: color}}>{visualizedNumber}</h1>
         </div>
     )
