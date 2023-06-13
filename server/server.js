@@ -65,11 +65,15 @@ socketServer.on('connection', (client) => {
 
         .on("startGame", async () => {
             const clientRoom = await getRoom(client)
+            const usersList = []
 
             if ((clientRoom.users.length > 0) && (clientRoom.state === 'waiting')) {
                 const tokensTaken = []
 
+                let timeLeft = 1
+
                 clientRoom.users.forEach(user => {
+                    usersList.push(user.clientID)
                     user.cards = []
                     let pushedCounter = 0
 
@@ -83,11 +87,7 @@ socketServer.on('connection', (client) => {
                             pushedCounter++
                         }
                     } while (pushedCounter != 14)
-
-                    socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users)
                 })
-
-                let timeLeft = 11
 
                 function countdown() {
                     timeLeft--;
@@ -101,8 +101,27 @@ socketServer.on('connection', (client) => {
 
                 setTimeout(() => {
                     socketServer.to(clientRoom.id).emit("startGame")
+                    clientRoom.playing = usersList[0]
+                    
+                    setTimeout(() => {                        
+                        socketServer.to(clientRoom.playing).emit("yourTurn", true)
+
+                        clientRoom.users.forEach(user => {
+                            socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users)
+                        })
+                    }, 100);
                 }, (timeLeft + 1) * 1000)
             }
+        })
+
+        .on("pass", async () => {
+            const clientRoom = await getRoom(client)
+            console.log(clientRoom);
+        })
+
+        .on("asktile", async () => {
+            const clientRoom = await getRoom(client)
+            console.log(clientRoom);
         })
 })
 

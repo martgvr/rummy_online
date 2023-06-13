@@ -54,3 +54,30 @@
     width: 25px;
     border-radius: 100%;
 }
+
+
+.gametable__board--grid {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+
+.gametable__board--alert {
+    position: absolute;
+    opacity: 0;
+
+    height: 100%;
+    width: 100%;
+    font-size: 3em;
+
+    align-items: center;
+    justify-content: center;
+    animation: 3s alertOpacity forwards;
+    
+}
+
+@keyframes alertOpacity {
+    0% { opacity: 0; }
+    80% { opacity: 1; }
+    100% { opacity: 0; }
+}

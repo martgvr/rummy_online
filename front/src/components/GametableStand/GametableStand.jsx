@@ -6,7 +6,7 @@ function GametableStand({ cards }) {
 	return(
         <div className="gametable__stand flex-row">
             {
-                cards.map(card => <GametableTile number={card} />)
+                cards.map(card => <GametableTile key={card} number={card} />)
             }
         </div>
     )

@@ -22,7 +22,7 @@ function GametableTile({ number }) {
         if ((number >= 53) && (number <= 78)) { setColor('#b09e00') }
         if ((number >= 79) && (number <= 104)) { setColor('#222') }
 
-        console.log(`${number}\t>\t ${visualizedNumber}`);
+        // console.log(`${number}\t>\t ${visualizedNumber}`);
     }, [])
 
 	return(

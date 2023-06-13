@@ -1,11 +1,11 @@
 import React from "react"
 import './gametablebuttons.css'
 
-function GametableButtons() {
+function GametableButtons({ passHandler, askTileHandler }) {
 	return (
         <div className="gametablebuttons flex-column">
-            <button>Finalizar turno</button>
-            <button>Pedir ficha</button>
+            <button onClick={passHandler}>Finalizar turno</button>
+            <button onClick={askTileHandler}>Pedir ficha</button>
         </div>
     )
 }

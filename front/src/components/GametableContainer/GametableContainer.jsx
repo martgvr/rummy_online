@@ -1,14 +1,31 @@
 import "./gametablecontainer.css"
-import React, { useEffect } from "react"
+import { socket } from "../../services/socket"
+import React, { useEffect, useState } from "react"
 
-import GametableStand from "../GametableStand/GametableStand"
 import LobbyChat from "../LobbyChat/LobbyChat"
+import GametableStand from "../GametableStand/GametableStand"
 import GametableButtons from "../GametableButtons/GametableButtons"
 
-function GametableContainer({ cards, opponents }) {
+function GametableContainer() {
+	const [cards, setCards] = useState([])
+    const [myTurn, setMyTurn] = useState(false)
+    const [opponents, setOpponents] = useState([])
+
 	useEffect(() => {
-		console.log("Oponentes:", opponents)
+		socket
+			.on("gameData", (cards, opponents) => {
+				setCards(cards)
+				setOpponents(opponents)
+			})
+
+			.on("yourTurn", (value) => {
+				setMyTurn(value)
+				console.log('turno', value);
+			})
 	}, [])
+	
+	const passHandler = () => socket.emit("pass")
+	const askTileHandler = () => socket.emit("asktile")
 
 	return (
 		<div className="gametablecontainer">
@@ -16,7 +33,7 @@ function GametableContainer({ cards, opponents }) {
 			<div className="gametable__opponents flex-column">
 				{
 					opponents.map(opponent => 
-						<div>
+						<div key={opponent}>
 							<img src="https://i.pinimg.com/originals/82/68/c7/8268c7aadf0a9077396836037307adeb.jpg" alt="" />
 							<p>{opponent.nickname}</p>
 						</div>
@@ -26,10 +43,18 @@ function GametableContainer({ cards, opponents }) {
 
 			<LobbyChat />
 			<GametableStand cards={cards} />
-			<GametableButtons />
+			{
+				myTurn && <GametableButtons passHandler={passHandler} askTileHandler={askTileHandler} />
+			}
 
-			<div className="gametable__board">
-				<p>gametable</p>
+			<div className="gametable__board flex-row">
+				<div className="gametable__board--grid flex-row">
+					<p>gametable</p>
+				</div>
+
+				<div className="gametable__board--alert flex-row" style={{ display: myTurn ? 'flex' : 'none' }}>
+					<h1>Es tu turno!</h1>
+				</div>
 			</div>
 		</div>
 	)
