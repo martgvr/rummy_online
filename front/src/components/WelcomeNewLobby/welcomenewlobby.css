@@ -11,8 +11,7 @@
     box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
 
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-top-left-radius: 20px;
-    border-bottom-left-radius: 20px;
+    border-radius: 20px;
 }
 
 .welcomenewlobby__data > p {
@@ -42,4 +41,8 @@
     gap: 10px;
     align-items: center;
     margin-bottom: 6px;
+}
+
+.welcomenewlobby__container {
+    gap: 20px;
 }

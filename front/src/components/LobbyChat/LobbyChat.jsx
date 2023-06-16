@@ -2,7 +2,7 @@ import "./lobbychat.css"
 import { socket } from "../../services/socket"
 import React, { useState, useEffect } from "react"
 
-function LobbyChat() {
+function LobbyChat({ side }) {
 	const [messages, setMessages] = useState([])
 
 	useEffect(() => {
@@ -25,23 +25,30 @@ function LobbyChat() {
 
 	const handleKeyDown = (event) => event.key === "Enter" && sendMessageHandler()
 
+	const chatStyle = {
+		borderLeft: '1px solid rgba(255, 255, 255, 0.2)',
+		borderRadius: '10px',
+		height: '150px',
+		backgroundColor: 'rgba(0, 0, 0, 0.8)'
+	}
+
 	return (
-		<div className="lobbychat__container flex-column">
+		<div className="lobbychat__container flex-column" style={side == false ? chatStyle : {} }>
 			<ul>
 				{messages.map((item, index) => (
-					<>
+					<div key={index}>
 						{
 							item.clientID == '' ?
-							<li key={index} className="lobbychat__container--system">
+							<li className="lobbychat__container--system">
 								{item.message}
 							</li>
 							:
-							<li key={index} className="lobbychat__container--message flex-row">
+							<li className="lobbychat__container--message flex-row">
 								<p>[{item.nickname}]:</p>
 								<p>{item.message}</p>
 							</li>
 						}
-					</>
+					</div>
 				))}
 			</ul>
 

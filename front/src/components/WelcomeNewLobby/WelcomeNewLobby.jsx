@@ -16,7 +16,7 @@ function WelcomeNewLobby({ roomID }) {
     const startGameHandler = () => socket.emit('startGame')
 
 	return(
-        <div className="welcomenewlobby__container flex-row">
+        <div className="welcomenewlobby__container flex-column">
             <div className='welcomenewlobby__data'>
                 <h2>Nueva sala creada</h2>
 
@@ -41,7 +41,7 @@ function WelcomeNewLobby({ roomID }) {
                 </div>
             </div>
 
-            <LobbyChat />
+            <LobbyChat side={false} />
         </div>
     )
 }

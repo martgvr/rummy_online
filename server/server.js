@@ -41,10 +41,8 @@ socketServer.on('connection', (client) => {
                 socketServer.to(client.id).emit("log", `La sala ${roomID} no existe`)
             } else {
                 await client.join(roomID)
-
                 socketServer.to(client.id).emit("joinSuccess", roomID)
                 socketServer.to(roomID).emit("newMessage", '', `${nickname} entró a la sala`)
-
                 checkRoomExistence.users.push({ clientID: client.id, nickname: nickname })
                 setTimeout(() => socketServer.to(roomID).emit("clientConnected", checkRoomExistence.users), 100)
             }
@@ -68,8 +66,8 @@ socketServer.on('connection', (client) => {
             const usersList = []
 
             if ((clientRoom.users.length > 0) && (clientRoom.state === 'waiting')) {
+                clientRoom.state = 'playing'
                 const tokensTaken = []
-
                 let timeLeft = 1
 
                 clientRoom.users.forEach(user => {
@@ -116,12 +114,46 @@ socketServer.on('connection', (client) => {
 
         .on("pass", async () => {
             const clientRoom = await getRoom(client)
-            console.log(clientRoom);
+
+            if (client.id == clientRoom.playing) {
+                const usersList = []
+                clientRoom.users.map(client => usersList.push(client.clientID))
+
+                console.log('usersList:', usersList);
+                console.log('client.id:', client.id);
+
+                const playingUserIndex = usersList.findIndex(user => user == client.id)
+                console.log(playingUserIndex);
+
+                if (playingUserIndex + 1 == usersList.length) {
+                    console.log('pegar la vuelta');
+
+                    clientRoom.playing = usersList[0]
+
+                    usersList.map(user => {
+                        socketServer.to(user).emit("yourTurn", false)
+                    })
+
+                    socketServer.to(clientRoom.playing).emit("yourTurn", true)
+                } else {
+                    console.log('juega el siguiente en el array');
+
+                    usersList.map(user => {
+                        socketServer.to(user).emit("yourTurn", false)
+                    })
+                    
+                    clientRoom.playing = usersList[playingUserIndex + 1]
+                    socketServer.to(clientRoom.playing).emit("yourTurn", true)
+                }
+            }
         })
 
         .on("asktile", async () => {
             const clientRoom = await getRoom(client)
-            console.log(clientRoom);
+
+            if (client.id == clientRoom.playing) {
+                console.log(clientRoom);
+            }
         })
 })
 

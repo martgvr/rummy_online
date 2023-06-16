@@ -5,18 +5,18 @@
     color: rgb(220, 220, 220);
     background-color: rgba(10, 10, 10, 0.8);
     box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     
     gap: 20px;
     width: 400px;
     padding: 10px;
+    
+    justify-content: space-between;
+
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
-
-    justify-content: space-between;
 }
 
 .lobbychat__container ul {

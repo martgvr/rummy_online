@@ -2,6 +2,7 @@
     width: 60px;
     height: 80px;
     border-radius: 6px;
+    background-color: #ffffe8;
     background-image: url('tile.png');
 
     color: black;

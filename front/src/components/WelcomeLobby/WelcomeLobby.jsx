@@ -14,7 +14,7 @@ function WelcomeLobby({ roomID }) {
 	const copyHandler = () => navigator.clipboard.writeText(roomID)
 
 	return (
-		<div className="welcomenewlobby__container flex-row">
+		<div className="welcomenewlobby__container flex-column">
 			<div className="welcomenewlobby__data">
 				<h2>Preparate!</h2>
 
@@ -40,7 +40,7 @@ function WelcomeLobby({ roomID }) {
 				</div>
 			</div>
 
-			<LobbyChat />
+			<LobbyChat side={false} />
 		</div>
 	)
 }
