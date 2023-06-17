@@ -126,22 +126,15 @@ socketServer.on('connection', (client) => {
                 console.log(playingUserIndex);
 
                 if (playingUserIndex + 1 == usersList.length) {
-                    console.log('pegar la vuelta');
+                    console.log('Empezar de vuelta');
 
                     clientRoom.playing = usersList[0]
-
-                    usersList.map(user => {
-                        socketServer.to(user).emit("yourTurn", false)
-                    })
-
+                    usersList.map(user => socketServer.to(user).emit("yourTurn", false))
                     socketServer.to(clientRoom.playing).emit("yourTurn", true)
                 } else {
-                    console.log('juega el siguiente en el array');
+                    console.log('Juega el siguiente en el array');
 
-                    usersList.map(user => {
-                        socketServer.to(user).emit("yourTurn", false)
-                    })
-                    
+                    usersList.map(user => socketServer.to(user).emit("yourTurn", false))
                     clientRoom.playing = usersList[playingUserIndex + 1]
                     socketServer.to(clientRoom.playing).emit("yourTurn", true)
                 }
