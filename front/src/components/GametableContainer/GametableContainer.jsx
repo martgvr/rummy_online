@@ -2,12 +2,15 @@ import "./gametablecontainer.css"
 import { socket } from "../../services/socket"
 import React, { useEffect, useState } from "react"
 
+import { formatNumber } from "../../services/formatNumber"
+
 import LobbyChat from "../LobbyChat/LobbyChat"
 import GametableStand from "../GametableStand/GametableStand"
 import GametableButtons from "../GametableButtons/GametableButtons"
 
 function GametableContainer() {
 	const [cards, setCards] = useState([])
+	const [newCard, setNewCard] = useState('')
     const [myTurn, setMyTurn] = useState(false)
     const [opponents, setOpponents] = useState([])
 
@@ -18,14 +21,13 @@ function GametableContainer() {
 				setOpponents(opponents)
 			})
 
-			.on("yourTurn", (value) => {
+			.on("yourTurn", (value, card) => {
 				setMyTurn(value)
-				console.log('turno', value);
+				card != undefined && setNewCard(formatNumber(card))
 			})
 	}, [])
 	
 	const passHandler = () => socket.emit("pass")
-	const askTileHandler = () => socket.emit("asktile")
 
 	return (
 		<div className="gametablecontainer">
@@ -43,8 +45,9 @@ function GametableContainer() {
 
 			<LobbyChat />
 			<GametableStand cards={cards} />
+
 			{
-				myTurn && <GametableButtons passHandler={passHandler} askTileHandler={askTileHandler} />
+				myTurn && <GametableButtons passHandler={passHandler} />
 			}
 
 			<div className="gametable__board flex-row">
@@ -52,8 +55,9 @@ function GametableContainer() {
 					<p>gametable</p>
 				</div>
 
-				<div className="gametable__board--alert flex-row" style={{ display: myTurn ? 'flex' : 'none' }}>
+				<div className="gametable__board--alert flex-column" style={{ display: myTurn ? 'flex' : 'none' }}>
 					<h1>Es tu turno!</h1>
+					<h2>{newCard.numberToShow}</h2>
 				</div>
 			</div>
 		</div>

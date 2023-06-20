@@ -101,14 +101,10 @@ socketServer.on('connection', (client) => {
                     socketServer.to(clientRoom.id).emit("startGame")
                     clientRoom.playing = usersList[0]
                     
-                    setTimeout(() => {                        
+                    setTimeout(() => {                    
                         socketServer.to(clientRoom.playing).emit("yourTurn", true)
-
-                        clientRoom.users.forEach(user => {
-                            socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users)
-                        })
-                    }, 100);
-                }, (timeLeft + 1) * 1000)
+                        clientRoom.users.forEach(user => socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users))
+                    }, 100)}, (timeLeft + 1) * 1000)
             }
         })
 
@@ -116,36 +112,45 @@ socketServer.on('connection', (client) => {
             const clientRoom = await getRoom(client)
 
             if (client.id == clientRoom.playing) {
+                // pushing every user into an array
                 const usersList = []
                 clientRoom.users.map(client => usersList.push(client.clientID))
 
-                console.log('usersList:', usersList);
-                console.log('client.id:', client.id);
-
+                // getting current user playing index to check if it's last one
                 const playingUserIndex = usersList.findIndex(user => user == client.id)
-                console.log(playingUserIndex);
+                clientRoom.playing = (playingUserIndex + 1 == usersList.length) ? usersList[0] : usersList[playingUserIndex + 1]
+                
+                // pushing every token taken into an array
+                const tokensTaken = []
+                clientRoom.users.forEach(user => user.cards.forEach(card => tokensTaken.push(card)))
 
-                if (playingUserIndex + 1 == usersList.length) {
-                    console.log('Empezar de vuelta');
+                // get current player server location to push new token
+                const currentPlayer = clientRoom.users.find(client => client.clientID == clientRoom.playing)
 
-                    clientRoom.playing = usersList[0]
-                    usersList.map(user => socketServer.to(user).emit("yourTurn", false))
-                    socketServer.to(clientRoom.playing).emit("yourTurn", true)
+                let number = Math.floor(Math.random() * 106) + 1
+                let checkExistence = tokensTaken.some(token => token == number)
+
+                if (!checkExistence) {
+                    currentPlayer.cards.push(number)
+                    tokensTaken.push(number)
+                    console.log('Pusheando numero:', number);
                 } else {
-                    console.log('Juega el siguiente en el array');
+                    while (checkExistence) {
+                        number = Math.floor(Math.random() * 106) + 1
+                        checkExistence = tokensTaken.some(token => token == number)
 
-                    usersList.map(user => socketServer.to(user).emit("yourTurn", false))
-                    clientRoom.playing = usersList[playingUserIndex + 1]
-                    socketServer.to(clientRoom.playing).emit("yourTurn", true)
+                        if (!checkExistence) {
+                            tokensTaken.push(number)
+                            currentPlayer.cards.push(number)
+                            console.log('Pusheando numero:', number);
+                        }
+                    }
                 }
-            }
-        })
 
-        .on("asktile", async () => {
-            const clientRoom = await getRoom(client)
-
-            if (client.id == clientRoom.playing) {
-                console.log(clientRoom);
+                // emit new number to client
+                clientRoom.users.forEach(user => socketServer.to(user.clientID).emit("gameData", user.cards, clientRoom.users))
+                usersList.map(user => socketServer.to(user).emit("yourTurn", false))
+                socketServer.to(clientRoom.playing).emit("yourTurn", true, number)
             }
         })
 })
