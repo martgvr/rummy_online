@@ -99,15 +99,12 @@ export default (socketServer) => {
                 const clientRoom = await getRoom(client)
     
                 if (client.id == clientRoom.playing) {
-                    // pushing every user into an array
                     const usersList = []
                     clientRoom.users.map(client => usersList.push(client.clientID))
     
-                    // getting current user playing index to check if it's last one
                     const playingUserIndex = usersList.findIndex(user => user == client.id)
                     clientRoom.playing = (playingUserIndex + 1 == usersList.length) ? usersList[0] : usersList[playingUserIndex + 1]
                     
-                    // pushing every token taken into an array
                     const tokensTaken = []
                     clientRoom.users.forEach(user => user.cards.forEach(card => tokensTaken.push(card)))
     
@@ -120,7 +117,6 @@ export default (socketServer) => {
                     if (!checkExistence) {
                         currentPlayer.cards.push(number)
                         tokensTaken.push(number)
-                        console.log('Pusheando numero:', number);
                     } else {
                         while (checkExistence) {
                             number = Math.floor(Math.random() * 106) + 1
@@ -129,7 +125,6 @@ export default (socketServer) => {
                             if (!checkExistence) {
                                 tokensTaken.push(number)
                                 currentPlayer.cards.push(number)
-                                console.log('Pusheando numero:', number);
                             }
                         }
                     }

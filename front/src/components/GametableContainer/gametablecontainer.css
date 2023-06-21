@@ -76,6 +76,10 @@
     
 }
 
+.gametable__board--alert > *:not(h1) {
+    font-size: 0.3em;
+}
+
 @keyframes alertOpacity {
     0% { opacity: 0; }
     80% { opacity: 1; }

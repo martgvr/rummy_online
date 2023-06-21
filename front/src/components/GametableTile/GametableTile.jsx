@@ -2,33 +2,13 @@ import './gametabletile.css'
 import React, { useEffect, useState } from "react"
 import { formatNumber } from "../../services/formatNumber"
 
-function GametableTile({ number }) {
+function GametableTile({ number, last }) {
     const [numberProps, setNumberProps] = useState('')
     
-    useEffect(() => {
-        // if ((number >= 1) && (number <= 13)) { setVisualizedNumber(number) }
-        // if ((number >= 14) && (number <= 26)) { setVisualizedNumber(number - 13) }
-        // if ((number >= 27) && (number <= 39)) { setVisualizedNumber(number - 26) }
-        // if ((number >= 40) && (number <= 52)) { setVisualizedNumber(number - 39) }
-        // if ((number >= 53) && (number <= 65)) { setVisualizedNumber(number - 52) }
-        // if ((number >= 66) && (number <= 78)) { setVisualizedNumber(number - 65) }
-        // if ((number >= 79) && (number <= 91)) { setVisualizedNumber(number - 78) }
-        // if ((number >= 92) && (number <= 104)) { setVisualizedNumber(number - 91) }
-        // if (number == 105) { setVisualizedNumber('X') }
-        // if (number == 106) { setVisualizedNumber('X') }
-
-        // if ((number >= 1) && (number <= 26)) { setColor('#c7141a') }
-        // if ((number >= 27) && (number <= 52)) { setColor('#0068a8') }
-        // if ((number >= 53) && (number <= 78)) { setColor('#b09e00') }
-        // if ((number >= 79) && (number <= 104)) { setColor('#222') }
-
-        setNumberProps(formatNumber(number))
-
-        
-    }, [])
+    useEffect(() => setNumberProps(formatNumber(number)), [])
 
 	return(
-        <div className="gametable__tile flex-row" draggable>
+        <div className="gametable__tile flex-row" draggable style={{ boxShadow: last ? '0px 0px 12px 0px rgba(139, 235, 91, 0.8)' : '' }} >
             <h1 style={{color: numberProps.colorToShow}}>{numberProps.numberToShow}</h1>
         </div>
     )

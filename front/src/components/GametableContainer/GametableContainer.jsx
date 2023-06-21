@@ -7,6 +7,7 @@ import { formatNumber } from "../../services/formatNumber"
 import LobbyChat from "../LobbyChat/LobbyChat"
 import GametableStand from "../GametableStand/GametableStand"
 import GametableButtons from "../GametableButtons/GametableButtons"
+import GametableTile from "../GametableTile/GametableTile"
 
 function GametableContainer() {
 	const [cards, setCards] = useState([])
@@ -23,7 +24,7 @@ function GametableContainer() {
 
 			.on("yourTurn", (value, card) => {
 				setMyTurn(value)
-				card != undefined && setNewCard(formatNumber(card))
+				setNewCard(card)
 			})
 	}, [])
 	
@@ -44,7 +45,7 @@ function GametableContainer() {
 			</div>
 
 			<LobbyChat />
-			<GametableStand cards={cards} />
+			<GametableStand cards={cards} last={newCard} />
 
 			{
 				myTurn && <GametableButtons passHandler={passHandler} />
@@ -57,7 +58,9 @@ function GametableContainer() {
 
 				<div className="gametable__board--alert flex-column" style={{ display: myTurn ? 'flex' : 'none' }}>
 					<h1>Es tu turno!</h1>
-					<h2>{newCard.numberToShow}</h2>
+					{
+						newCard != undefined && <GametableTile  number={newCard} />
+					}
 				</div>
 			</div>
 		</div>
