@@ -45,7 +45,7 @@ function GametableContainer() {
 			</div>
 
 			<LobbyChat />
-			<GametableStand cards={cards} last={newCard} />
+			<GametableStand cards={cards} last={newCard} setCards={setCards} />
 
 			{
 				myTurn && <GametableButtons passHandler={passHandler} />

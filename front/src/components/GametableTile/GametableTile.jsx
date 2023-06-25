@@ -1,17 +1,23 @@
-import './gametabletile.css'
+import "./gametabletile.css"
 import React, { useEffect, useState } from "react"
 import { formatNumber } from "../../services/formatNumber"
 
-function GametableTile({ number, last }) {
-    const [numberProps, setNumberProps] = useState('')
-    
-    useEffect(() => setNumberProps(formatNumber(number)), [])
+import { useSortable } from "@dnd-kit/sortable"
+import { CSS } from "@dnd-kit/utilities"
 
-	return(
-        <div className="gametable__tile flex-row" draggable style={{ boxShadow: last ? '0px 0px 12px 0px rgba(139, 235, 91, 0.8)' : '' }} >
-            <h1 style={{color: numberProps.colorToShow}}>{numberProps.numberToShow}</h1>
-        </div>
-    )
+function GametableTile({ number, last }) {
+	const [numberProps, setNumberProps] = useState("")
+	const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id: number })
+
+	useEffect(() => setNumberProps(formatNumber(number)), [])
+
+	const style = { transform: CSS.Transform.toString(transform), transition }
+
+	return (
+		<div className="gametable__tile flex-row" style={style} {...attributes} {...listeners} ref={setNodeRef} >
+			<h1 style={{ color: numberProps.colorToShow }}>{numberProps.numberToShow}</h1>
+		</div>
+	)
 }
 
 export default GametableTile
