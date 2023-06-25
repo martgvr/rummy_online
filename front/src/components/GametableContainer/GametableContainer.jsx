@@ -27,7 +27,7 @@ function GametableContainer() {
 			})
 	}, [])
 	
-	const passHandler = () => socket.emit("pass")
+	const passHandler = () => socket.emit("pass", [...cards, 100])
 
 	return (
 		<div className="gametablecontainer">

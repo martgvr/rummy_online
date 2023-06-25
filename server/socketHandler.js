@@ -9,6 +9,16 @@ const getRoom = (client) => new Promise((resolve, reject) => {
     })
 })
 
+const checkArrayIntegrity = (oldArray, newArray) => {
+    // check & delete not matching items
+    newArray.map((newItem, index) => {
+        const checkExistence = oldArray.find(item => item == newItem)
+        checkExistence == undefined && newArray.splice(index, 1)
+    })
+
+    return newArray
+}
+
 export default (socketServer) => {
     socketServer.on('connection', (client) => {
         client
@@ -95,9 +105,9 @@ export default (socketServer) => {
                 }
             })
     
-            .on("pass", async () => {
+            .on("pass", async (newOrderCards) => {
                 const clientRoom = await getRoom(client)
-    
+
                 if (client.id == clientRoom.playing) {
                     const usersList = []
                     clientRoom.users.map(client => usersList.push(client.clientID))
@@ -110,6 +120,10 @@ export default (socketServer) => {
     
                     // get current player server location to push new token
                     const currentPlayer = clientRoom.users.find(client => client.clientID == clientRoom.playing)
+
+                    const oldOrderCards = currentPlayer.cards
+                    const arrayIntegrity = checkArrayIntegrity(oldOrderCards, newOrderCards)
+                    currentPlayer.cards = arrayIntegrity
     
                     let number = Math.floor(Math.random() * 106) + 1
                     let checkExistence = tokensTaken.some(token => token == number)
