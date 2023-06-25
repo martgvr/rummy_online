@@ -13,29 +13,6 @@
                             "stand      stand";   
 }
 
-.gametable__opponents {
-    grid-area: opponents;
-    align-self: flex-end;
-
-    gap: 10px;
-    padding: 10px 20px;
-    width: fit-content;
-    height: fit-content;
-
-    color: rgb(220, 220, 220);
-    background-color: rgba(10, 10, 10, 0.8);
-    box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
-
-    backdrop-filter: blur(8px);
-
-    border-top-right-radius: 10px;
-    border-bottom-right-radius: 10px;
-
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    border-right: 1px solid rgba(255, 255, 255, 0.2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-}
-
 .gametable__board {
     grid-area: gameboard;
     position: absolute;
@@ -43,18 +20,6 @@
     width: 100%;
     z-index: -1;
 }
-
-.gametable__opponents > div {
-    gap: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.gametable__opponents > div img {
-    width: 25px;
-    border-radius: 100%;
-}
-
 
 .gametable__board--grid {
     position: absolute;
