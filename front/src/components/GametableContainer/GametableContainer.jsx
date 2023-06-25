@@ -31,16 +31,11 @@ function GametableContainer() {
 
 	return (
 		<div className="gametablecontainer">
-			<GametableOpponents opponents={opponents} />
 			<LobbyChat />
-
-			<GametableStand cards={cards} last={newCard} setCards={setCards} />
-
-			{
-				myTurn && <GametableButtons passHandler={passHandler} />
-			}
-
+			<GametableOpponents opponents={opponents} />
+			<GametableButtons passHandler={passHandler} myTurn={myTurn} /> 
 			<GametableBoard newCard={newCard} myTurn={myTurn} />
+			<GametableStand cards={cards} last={newCard} setCards={setCards} />
 		</div>
 	)
 }

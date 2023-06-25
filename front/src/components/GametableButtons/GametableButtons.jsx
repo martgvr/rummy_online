@@ -1,11 +1,16 @@
 import React from "react"
 import './gametablebuttons.css'
 
-function GametableButtons({ passHandler }) {
+function GametableButtons({ passHandler, myTurn }) {
 	return (
-        <div className="gametablebuttons flex-column">
-            <button onClick={passHandler}>Finalizar turno</button>
-        </div>
+        <>
+            {
+                myTurn && 
+                <div className="gametablebuttons flex-column">
+                    <button onClick={passHandler}>Finalizar turno</button>
+                </div>
+            }
+        </>
     )
 }
 

@@ -13,38 +13,6 @@
                             "stand      stand";   
 }
 
-.gametable__board {
-    grid-area: gameboard;
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    z-index: -1;
-}
-
-.gametable__board--grid {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-}
-
-.gametable__board--alert {
-    position: absolute;
-    opacity: 0;
-
-    height: 100%;
-    width: 100%;
-    font-size: 3em;
-
-    align-items: center;
-    justify-content: center;
-    animation: 3s alertOpacity forwards;
-    
-}
-
-.gametable__board--alert > *:not(h1) {
-    font-size: 0.3em;
-}
-
 @keyframes alertOpacity {
     0% { opacity: 0; }
     80% { opacity: 1; }
